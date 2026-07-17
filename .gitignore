@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Spark
+metastore_db/
+spark-warehouse/
+derby.log
+*.crc
+_SUCCESS
+
+# Outputs de execução local
+data/output/
+
+# IDEs
+.idea/
+.vscode/
