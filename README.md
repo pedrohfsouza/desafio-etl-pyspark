@@ -15,6 +15,7 @@ desafio-etl-pyspark/
 │   ├── readers.py                  # Leitura dos arquivos de input
 │   ├── transformers.py             # Join + agregações (transformações)
 │   ├── writers.py                  # Escrita Parquet (snappy) + particionamento
+│   ├── data_quality.py             # Módulo de observability (Qualidade de Dados)
 │   └── main.py                     # Entrypoint
 ├── tests/
 │   ├── __init__.py
@@ -103,3 +104,7 @@ data/output/
     └── data_venda=2023-04-03/
         └── part-00000-...snappy.parquet
 ```
+
+### Data Observability
+
+O módulo de Data Quality apura métricas de unicidade, completude e integridade. Caso existam inconsistências, o sistema gera logs com quantidade e percentual de registros afetados, garantindo visibilidade sem interromper o fluxo do pipeline.
