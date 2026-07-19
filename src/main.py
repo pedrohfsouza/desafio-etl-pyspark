@@ -17,6 +17,7 @@ from .transformers import (
     balanco_por_produto,
 )
 from .writers import write_parquet
+from .data_quality import check_unicidade, check_completude, check_integridade_referencial
 
 def _configurar_log(nivel: str = "INFO") -> None:
     logging.basicConfig(
@@ -54,15 +55,29 @@ def run(clientes_path: str, vendas_path: str, output_path: str, spark: SparkSess
         
     try:
         # Extract
+        logger.info("=== Iniciando Extração ===")
         df_clientes = read_clientes(spark, clientes_path)
         df_vendas = read_vendas(spark, vendas_path)
 
+        # Data Quality (Observability/Métricas)
+        logger.info("=== Apurando Métricas de Data Quality ===")
+
+        check_unicidade(df_clientes, "df_clientes", "cliente_id")
+        check_unicidade(df_vendas, "df_vendas", "venda_id")
+
+        check_completude(df_clientes, "df_clientes", ["cliente_id"])
+        check_completude(df_vendas, "df_vendas", ["venda_id", "cliente_id", "produto_id", "valor", "data_venda"])
+
+        check_integridade_referencial(df_vendas, df_clientes, "df_vendas", "df_clientes", "cliente_id")
+
         # Transform
+        logger.info("=== Iniciando Transformações ===")
         df_join = join_vendas_clientes(df_vendas, df_clientes)
         df_resumo = resumo_por_cliente(df_join)
         df_balanco = balanco_por_produto(df_vendas)
 
         # Load
+        logger.info("=== Iniciando Escrita (Load) ===")
         out_resumo = os.path.join(output_path, "resumo_clientes")
         out_balanco = os.path.join(output_path, "balanco_produtos")
 
