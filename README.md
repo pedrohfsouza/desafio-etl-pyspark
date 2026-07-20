@@ -105,6 +105,23 @@ data/output/
         └── part-00000-...snappy.parquet
 ```
 
+#### Exemplo de saída (partição data_venda=2026-04-03):
+
+- **resumo_clientes**
+```
+cliente_id  | nome       | total_vendas   | quantidade_vendas  | ticket_medio   | data_venda
+00001       | João Silva | 1734.50        | 2                  | 867.25         | 2026-04-03
+00002       | Maria Souza| 12.00          | 1                  | 12.00          | 2026-04-03
+
+```
+
+- **balanco_produtos**
+```
+produto_id  | total_vendas_produto  | quantidade_vendas_produto | ticket_medio_produto  | data_venda
+00001       | 1234.50               | 1                         | 1234.50               | 2026-04-03
+00002       | 512.00                | 2                         | 256.00                | 2026-04-03
+```
+
 ### Data Observability
 
 O módulo de Data Quality apura métricas de unicidade, completude e integridade. Caso existam inconsistências, o sistema gera logs com quantidade e percentual de registros afetados, garantindo visibilidade sem interromper o fluxo do pipeline.
