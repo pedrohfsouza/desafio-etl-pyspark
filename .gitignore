@@ -14,7 +14,7 @@ derby.log
 _SUCCESS
 
 # Outputs de execução local
-data/output/
+# data/output/
 
 # IDEs
 .idea/
